@@ -7,8 +7,15 @@ import LockIcon from "../components/Icons/LockIcon";
 import { useState } from "react";
 import HideEyeIcon from "../components/Icons/HideEyeIcon";
 import EyeIcon from "../components/Icons/EyeIcon";
+import { useAuth } from "../hooks/useAuth";
 
-const LoginPasswordInput = () => {
+const LoginPasswordInput = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -22,6 +29,8 @@ const LoginPasswordInput = () => {
         autoComplete="current-password"
         placeholder="Password"
         className="pl-11"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
       />
       <button
         className="absolute right-3 top-4"
@@ -35,7 +44,21 @@ const LoginPasswordInput = () => {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const onClick = () => navigate("/items");
+  const { login, state } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError(null);
+    try {
+      await login(email, password);
+      navigate("/items");
+    } catch (err: unknown) {
+      setFormError((err as Error)?.message || "Login failed");
+    }
+  };
 
   return (
     <div id="home-page" className="relative h-[calc(100vh_-_112px)]">
@@ -48,7 +71,7 @@ const HomePage = () => {
         )}
       >
         {/* TODO: Move this to another file and integrate with API */}
-        <form className="flex flex-col gap-6 w-72" onSubmit={(e) => e.preventDefault()}>
+        <form className="flex flex-col gap-6 w-72" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-2 font-dosis items-center">
             <h1 className="text-2xl font-semibold text-primaryFont">Sign in with email</h1>
             <p className="text-lg font-normal text-secondaryFont">Start on a new shopping list.</p>
@@ -63,11 +86,14 @@ const HomePage = () => {
               autoComplete="email"
               placeholder="Email"
               className="pl-11"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <LoginPasswordInput />
+          <LoginPasswordInput value={password} onChange={setPassword} />
+          {formError && <div className="text-red-500 text-sm text-center">{formError}</div>}
           <div className="w-full flex flex-col items-center">
-            <Button className="w-full !h-12">Login</Button>
+            <Button className="w-full !h-12">{state.isLoading ? "Logging in..." : "Login"}</Button>
             <button className="mt-4 text-textGray text-sm">Sign in as Guest</button>
           </div>
         </form>
