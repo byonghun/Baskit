@@ -1,10 +1,10 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-export const ProtectedRoute = ({ 
+export const ProtectedRoute = ({
   children,
-  allowedRoles = []
-}: { 
+  allowedRoles = [],
+}: {
   children: React.ReactNode;
   allowedRoles?: string[];
 }) => {
@@ -19,7 +19,7 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (allowedRoles.length > 0 && !allowedRoles.some(role => state.user?.roles.includes(role))) {
+  if (allowedRoles.length > 0 && !allowedRoles.some((role) => state.user?.roles.includes(role))) {
     return <Navigate to="/unauthorized" replace />;
   }
 
