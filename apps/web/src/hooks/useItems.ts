@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ItemFormOutput } from "@app/shared";
-import { ItemsClient } from "../api/items.api";
+import { ModelApi } from "../api/ModelApi";
+
+const ItemsClient = new ModelApi("items");
 
 const itemsKeys = {
   items: ["items"] as const,

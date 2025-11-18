@@ -26,7 +26,7 @@ const ItemsContainer = () => {
 
   useEffect(() => {
     if (query.isSuccess) {
-      setItems(query.data.items as ItemDTO[]);
+      setItems(query.data.data as ItemDTO[]);
       setHasLoadedOnce(true);
     }
   }, [query.isSuccess, query.data]);
