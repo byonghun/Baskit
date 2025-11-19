@@ -1,4 +1,4 @@
-# Veritone Shopping List (Monorepo)
+# Baskit Shopping List (Monorepo)
 
 A TypeScript monorepo with a React (Webpack) frontend and a Node/Express backend, sharing utilities through a shared package.
 
