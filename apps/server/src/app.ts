@@ -4,8 +4,9 @@ import morgan from "morgan";
 
 import { errorHandler } from "./middleware/errorHandler";
 import { globalLimiter } from "./middleware/rateLimit";
-import { itemsRoutes } from "./modules/items/routes";
 import { sseRouter } from "./sse";
+// @ts-ignore
+import { genericRESTRoutes } from "./modules/generic/genericRESTRoutes";
 
 const API_VERSION = "v1" as const;
 
@@ -62,8 +63,8 @@ app.use(`/api/${API_VERSION}`, setApiVersion(API_VERSION));
 // Mount SSE under /api/v1/sse  (/api/v1/sse/items)
 app.use(`/api/${API_VERSION}/sse`, sseRouter);
 
-// Mount MVP CRUD at /api/v1/items
-app.use(`/api/${API_VERSION}/items`, itemsRoutes);
+// Mount generic routes
+app.use(`/api/${API_VERSION}`, genericRESTRoutes);
 
 app.use((_req: Request, res: Response) =>
   res.status(404).json({ error: "NOT_FOUND" as const, message: "Route not found" }),

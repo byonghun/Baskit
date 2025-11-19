@@ -37,7 +37,7 @@ export default [
 
   // Web (React) — type-aware
   {
-    files: ["apps/web/src/**/*.{ts,tsx}"],
+    files: ["apps/web/src/**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -82,7 +82,7 @@ export default [
 
   // Shared workspace (plain TS)
   {
-    files: ["shared/**/*.{ts,tsx}"],
+    files: ["shared/**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
@@ -102,7 +102,7 @@ export default [
 
   // Server (Node) — type-aware
   {
-    files: ["apps/server/**/*.{ts,tsx}"],
+    files: ["apps/server/**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -137,6 +137,10 @@ export default [
         node: true,
       },
     },
+    env: {
+      node: true,
+      es2021: true
+    }
   },
 
   // 5) Jest test files (both apps)
